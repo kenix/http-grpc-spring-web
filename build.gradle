@@ -20,9 +20,10 @@ release {
   defaultVersionStrategy = nebula.plugin.release.git.opinion.Strategies.SNAPSHOT
 }
 
-apply from: "$rootDir/gradle/configTests.gradle"
 apply from: "$rootDir/gradle/checkstyle.gradle"
 apply from: "$rootDir/gradle/publish.gradle"
+apply from: "$rootDir/gradle/config-tests.gradle"
+apply from: "$rootDir/gradle/package.gradle"
 
 group = 'io.github.kenix'
 

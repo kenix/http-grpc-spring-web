@@ -1,0 +1,18 @@
+// Include LICENSE
+tasks.withType(Jar) {
+  from(project.rootDir) {
+    include 'LICENSE'
+    into 'META-INF'
+  }
+}
+
+// Customize MANIFEST.MF
+jar {
+  manifest {
+    attributes(
+        'Implementation-Title': project.name,
+        'Implementation-Version': project.version,
+        'Implementation-Vendor': 'Mike Zhao'
+    )
+  }
+}
