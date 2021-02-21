@@ -45,6 +45,8 @@ public class HttpGrpcAutoConfiguration {
   /**
    * Configures one {@link SimpleUrlHandlerMapping} with order -1, that should land before other
    * handler mappings.
+   *
+   * @return simple URL handler mapping
    */
   @Bean
   public SimpleUrlHandlerMapping simpleUrlHandlerMapping() {

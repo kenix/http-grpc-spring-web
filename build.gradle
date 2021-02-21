@@ -21,9 +21,9 @@ release {
 }
 
 apply from: "$rootDir/gradle/checkstyle.gradle"
-apply from: "$rootDir/gradle/publish.gradle"
 apply from: "$rootDir/gradle/config-tests.gradle"
 apply from: "$rootDir/gradle/package.gradle"
+apply from: "$rootDir/gradle/publish.gradle"
 
 group = 'io.github.kenix'
 

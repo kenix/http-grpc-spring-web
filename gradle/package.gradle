@@ -6,6 +6,15 @@ tasks.withType(Jar) {
   }
 }
 
+task sourcesJar(type: Jar) {
+  from sourceSets.main.allJava
+  archiveClassifier.set('sources')
+}
+
+task javadocJar(type: Jar) {
+  from javadoc
+  archiveClassifier.set('javadoc')
+}
 // Customize MANIFEST.MF
 jar {
   manifest {

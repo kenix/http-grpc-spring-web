@@ -1,10 +1,6 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-signing {
-  sign configurations.archives
-}
-
 ext {
   // this should cover all version strategies
   isRelease = !(project.version.toString().toLowerCase().contains('snapshot'))
@@ -14,6 +10,9 @@ publishing {
   publications {
     mavenJava(MavenPublication) {
       from components.java
+      artifact sourcesJar
+      artifact javadocJar
+
       pom {
         name = 'HTTP gRPC Spring Boot Starter'
         description = 'HTTP gRPC Spring Boot Starter'
@@ -22,7 +21,6 @@ publishing {
           license {
             name = 'MIT License'
             url = 'http://www.opensource.org/licenses/mit-license.php'
-            distribution = 'repo'
           }
         }
         developers {
@@ -53,4 +51,8 @@ publishing {
       }
     }
   }
+}
+
+signing {
+  sign publishing.publications.mavenJava
 }
