@@ -1,0 +1,22 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+  configFile rootProject.file('checkstyle.xml')
+  toolVersion '8.36'
+  showViolations = true
+  ignoreFailures = false
+  maxWarnings = 0
+}
+
+tasks.withType(Checkstyle) {
+  reports {
+    xml.enabled true
+    html.enabled true
+    //html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
+  }
+}
+
+checkstyleMain {
+  // set source explicitly to exclude generated code from source set of checkstyle
+  source = fileTree('src/main/java')
+}
