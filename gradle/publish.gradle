@@ -6,13 +6,34 @@ ext {
   isRelease = !(project.version.toString().toLowerCase().contains('snapshot'))
 }
 
+// Include LICENSE
+tasks.withType(Jar) {
+  from(project.rootDir) {
+    include 'LICENSE'
+    into 'META-INF'
+  }
+}
+
+java {
+  withSourcesJar()
+  withJavadocJar()
+}
+
+// Customize MANIFEST.MF
+jar {
+  manifest {
+    attributes(
+        'Implementation-Title': project.name,
+        'Implementation-Version': project.version,
+        'Implementation-Vendor': 'Mike Zhao'
+    )
+  }
+}
+
 publishing {
   publications {
     mavenJava(MavenPublication) {
       from components.java
-      artifact sourcesJar
-      artifact javadocJar
-
       pom {
         name = 'HTTP gRPC Spring Boot Starter'
         description = 'HTTP gRPC Spring Boot Starter'

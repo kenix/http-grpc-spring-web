@@ -4,7 +4,7 @@ buildscript {
     protobufVersion = '0.8.15'
     protocVersion = '3.14.0'
     grpcVersion = '1.31.1'
-    springBootVersion = '2.+'
+    springBootVersion = '[2.0.0.RELEASE,)'
     nebulaVersion = '15.3.1'
     spockVersion = '1.3-groovy-2.5'
   }
@@ -22,7 +22,6 @@ release {
 
 apply from: "$rootDir/gradle/checkstyle.gradle"
 apply from: "$rootDir/gradle/config-tests.gradle"
-apply from: "$rootDir/gradle/package.gradle"
 apply from: "$rootDir/gradle/publish.gradle"
 
 group = 'io.github.kenix'
