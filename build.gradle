@@ -1,65 +1,44 @@
 buildscript {
   ext {
-    // libraries
     protobufVersion = '0.8.15'
     protocVersion = '3.14.0'
     grpcVersion = '1.31.1'
     springBootVersion = '[2.0.0.RELEASE,)'
     nebulaVersion = '15.3.1'
     spockVersion = '1.3-groovy-2.5'
+    lombokVersion = '1.18.+'
   }
 }
 
 plugins {
   id "nebula.release" version "${nebulaVersion}"
-  id 'java-library'
-  id 'groovy'
 }
 
 release {
   defaultVersionStrategy = nebula.plugin.release.git.opinion.Strategies.SNAPSHOT
 }
 
-apply from: "$rootDir/gradle/checkstyle.gradle"
-apply from: "$rootDir/gradle/config-tests.gradle"
-apply from: "$rootDir/gradle/publish.gradle"
+subprojects {
+  group = 'io.github.kenix'
 
-group = 'io.github.kenix'
+  apply plugin: 'groovy'
+  apply from: "$rootDir/gradle/config-tests.gradle"
 
-compileJava {
-  options.release.set(8)
-}
+  repositories {
+    mavenCentral()
+  }
 
-configurations {
-  compileOnly {
-    extendsFrom annotationProcessor
+  dependencies {
+    testImplementation 'org.codehaus.groovy:groovy-all:2.5.13'
+    testImplementation "org.spockframework:spock-spring:${spockVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
   }
 }
 
-java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(11)
-    vendor = JvmVendorSpec.ADOPTOPENJDK
+apply plugin: 'idea'
+idea {
+  module {
+    downloadJavadoc = true
+    downloadSources = true
   }
-}
-
-repositories {
-  mavenCentral()
-}
-
-dependencies {
-  implementation "io.grpc:grpc-protobuf:$grpcVersion"
-  implementation "io.grpc:grpc-stub:$grpcVersion"
-  implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-  implementation "com.google.protobuf:protobuf-java-util:3.15.0"
-  implementation "org.apache.commons:commons-text:1.9"
-
-  annotationProcessor "org.projectlombok:lombok:1.18.+"
-
-  testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
-  testImplementation "org.spockframework:spock-spring:${spockVersion}"
-}
-
-test {
-  useJUnitPlatform()
 }

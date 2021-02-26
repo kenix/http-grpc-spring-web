@@ -37,7 +37,7 @@ publishing {
       pom {
         name = 'HTTP gRPC Spring Boot Starter'
         description = 'HTTP gRPC Spring Boot Starter'
-        url = 'https://github.com/kenix/http-grpc-spring-boot-starter'
+        url = 'https://github.com/kenix/http-grpc-spring-web'
         licenses {
           license {
             name = 'MIT License'
@@ -52,9 +52,9 @@ publishing {
           }
         }
         scm {
-          connection = 'scm:git:git://github.com/kenix/http-grpc-spring-boot-starter.git'
-          developerConnection = 'scm:git:ssh@github.com:kenix/http-grpc-spring-boot-starter.git'
-          url = 'https://github.com/kenix/http-grpc-spring-boot-starter'
+          connection = 'scm:git:git://github.com/kenix/http-grpc-spring-web.git'
+          developerConnection = 'scm:git:ssh@github.com:kenix/http-grpc-spring-web.git'
+          url = 'https://github.com/kenix/http-grpc-spring-web'
         }
       }
     }

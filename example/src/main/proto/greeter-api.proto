@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+package greet;
+
+option java_multiple_files = false;
+option java_package = "net.kenix.grpc.greeter.api";
+option java_outer_classname = "GreeterProto";
+
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      get: "/v1/greeter/{name}"
+    };
+  }
+  rpc SayHelloFrom (HelloRequestFrom) returns (HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/greeter"
+      body: "*"
+      additional_bindings {
+        post: "/v1/greeter/{name}/{from}"
+        body: "sub"
+      }
+      additional_bindings {
+        post: "/v1/greeter/{name}"
+        body: "sub"
+      }
+    };
+  }
+}
+
+message HelloRequest {
+  message SubMessage {
+    string subfield = 1;
+  }
+
+  string name = 1 [(validate.rules).string = {
+    pattern:   "^[^0-9][A-Za-z]+$",
+    max_bytes: 16,
+  }];
+  SubMessage sub = 2;
+  Planet planet = 3;
+  repeated string role = 4;
+}
+
+message SubFrom {
+  int32 fromField = 1;
+  Planet planet = 2;
+}
+
+message HelloRequestFrom {
+  string name = 1;
+  string from = 2;
+  SubFrom sub = 3;
+}
+
+message HelloReply {
+  string message = 1;
+}
+
+enum Planet{
+  Unknown = 0;
+  Earth = 1;
+  Mars = 2;
+}

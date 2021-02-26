@@ -1,0 +1,67 @@
+plugins {
+  id 'java'
+  id 'com.google.protobuf' version "$protobufVersion"
+}
+
+ext {
+  envoyproxyversion = '0.4.1'
+}
+
+sourceSets {
+  main {
+    java {
+      srcDir "${buildDir}/generated-sources/main/java"
+      srcDir "${buildDir}/generated-sources/main/grpc"
+      srcDir "${buildDir}/generated-sources/main/javapgv"
+    }
+  }
+}
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+dependencies {
+  implementation "io.grpc:grpc-protobuf:$grpcVersion"
+  implementation "io.grpc:grpc-stub:$grpcVersion"
+  implementation "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyproxyversion"
+  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-stub:$envoyproxyversion"
+  implementation 'org.springframework.boot:spring-boot-starter-web:2.4.2'
+  implementation project(':lib')
+  implementation 'net.devh:grpc-server-spring-boot-starter:2.10.1.RELEASE'
+  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-grpc:$envoyproxyversion"
+
+  annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:$protocVersion"
+  }
+
+  generatedFilesBaseDir = "$buildDir/generated-sources"
+
+  clean {
+    delete generatedFilesBaseDir
+  }
+
+  plugins {
+    grpc {
+      artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
+    }
+    javapgv {
+      artifact = "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyproxyversion"
+    }
+  }
+
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+      javapgv {
+        option "lang=java"
+      }
+    }
+  }
+}

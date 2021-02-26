@@ -1,0 +1,35 @@
+plugins {
+  id 'java-library'
+}
+
+apply from: "$rootDir/gradle/checkstyle.gradle"
+apply from: "$rootDir/gradle/publish.gradle"
+
+archivesBaseName = 'http-grpc-spring-web'
+
+compileJava {
+  options.release.set(8)
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+    vendor = JvmVendorSpec.ADOPTOPENJDK
+  }
+}
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+dependencies {
+  annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+  implementation "io.grpc:grpc-protobuf:$grpcVersion"
+  implementation "io.grpc:grpc-stub:$grpcVersion"
+  implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+  implementation "com.google.protobuf:protobuf-java-util:3.15.0"
+  implementation 'com.google.guava:guava'
+  implementation 'net.devh:grpc-server-spring-boot-autoconfigure:2.10.1.RELEASE'
+}
