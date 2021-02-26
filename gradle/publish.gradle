@@ -33,6 +33,7 @@ jar {
 publishing {
   publications {
     mavenJava(MavenPublication) {
+      artifactId = rootProject.name
       from components.java
       pom {
         name = 'HTTP gRPC Spring Boot Starter'

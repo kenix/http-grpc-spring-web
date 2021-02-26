@@ -5,7 +5,7 @@ plugins {
 apply from: "$rootDir/gradle/checkstyle.gradle"
 apply from: "$rootDir/gradle/publish.gradle"
 
-archivesBaseName = 'http-grpc-spring-web'
+archivesBaseName = rootProject.name
 
 compileJava {
   options.release.set(8)
