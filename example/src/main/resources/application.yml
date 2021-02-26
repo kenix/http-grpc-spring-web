@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: http-grpc-spring-web-example
+  main:
+    cloud-platform: kubernetes
+    banner-mode: off
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+grpc:
+  server:
+    port: 0
+
+server:
+  shutdown: graceful
