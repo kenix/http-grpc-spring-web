@@ -13,6 +13,7 @@ import io.grpc.ServerMethodDefinition;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -28,6 +29,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -42,17 +45,12 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @RequiredArgsConstructor
 public class HttpGrpcMapper implements ApplicationContextAware {
 
-  private static final Method MTD;
+  private static final Class<TranscoderController> CONTROLLER_CLASS = TranscoderController.class;
+  private static final String CONTROLLER_METHOD = "handleRequest";
+  private static final Method MTD = Optional.ofNullable(ReflectionUtils.findMethod(
+      CONTROLLER_CLASS, CONTROLLER_METHOD, HttpServletRequest.class, HttpServletResponse.class)
+  ).orElseThrow(() -> new IllegalStateException("cannot find "));
   private static final Pattern P = Pattern.compile("/");
-
-  static {
-    try {
-      MTD = TranscoderController.class.getMethod("handleRequest",
-          HttpServletRequest.class, HttpServletResponse.class);
-    } catch (NoSuchMethodException e) {
-      throw new IllegalStateException(e);
-    }
-  }
 
   private ApplicationContext appCtx;
 
@@ -145,7 +143,7 @@ public class HttpGrpcMapper implements ApplicationContextAware {
   }
 
   @Override
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.appCtx = applicationContext;
+  public void setApplicationContext(@NonNull ApplicationContext appCtx) throws BeansException {
+    this.appCtx = appCtx;
   }
 }

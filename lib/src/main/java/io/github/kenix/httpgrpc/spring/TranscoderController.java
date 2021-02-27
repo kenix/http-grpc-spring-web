@@ -211,8 +211,7 @@ class TranscoderController extends AbstractController {
    * Handles exceptions and translates it into proper responses.
    */
   @ExceptionHandler(Throwable.class)
-  public void handleStatusRuntimeEx(Throwable t, HttpServletRequest req,
-      HttpServletResponse resp) {
+  public void handleThrowable(Throwable t, HttpServletRequest req, HttpServletResponse resp) {
     final Status status = grpcStatus(t);
     wireResponse(toHttpStatus(status.getCode()), protoStatus(status),
         getResponseContentType(req), resp);

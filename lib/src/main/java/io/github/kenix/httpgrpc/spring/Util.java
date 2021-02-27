@@ -92,22 +92,24 @@ final class Util {
    * Creates {@link io.grpc.Status} from {@link Throwable}.
    */
   public static io.grpc.Status grpcStatus(Throwable t) {
-    final io.grpc.Status status;
     if (t instanceof StatusException) {
-      final StatusException statusEx = (StatusException) t;
-      status = statusEx.getStatus();
-    } else if (t instanceof StatusRuntimeException) {
-      final StatusRuntimeException statusRuntimeEx = (StatusRuntimeException) t;
-      status = statusRuntimeEx.getStatus();
-    } else if (t instanceof InvalidProtocolBufferException) {
-      final InvalidProtocolBufferException invalidProto = (InvalidProtocolBufferException) t;
-      status = io.grpc.Status.fromCode(Code.INVALID_ARGUMENT)
-          .withDescription(invalidProto.getMessage());
-    } else {
-      status = io.grpc.Status.fromCode(Code.INTERNAL).withCause(t.getCause());
+      return ((StatusException) t).getStatus();
     }
 
-    return status;
+    if (t instanceof StatusRuntimeException) {
+      return ((StatusRuntimeException) t).getStatus();
+    }
+
+    if (t instanceof InvalidProtocolBufferException) {
+      return io.grpc.Status
+          .fromCode(Code.INVALID_ARGUMENT)
+          .withDescription(t.getMessage());
+    }
+
+    return io.grpc.Status
+        .fromCode(Code.INTERNAL)
+        .withDescription(t.getMessage())
+        .withCause(t.getCause());
   }
 
   /**
