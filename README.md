@@ -6,8 +6,8 @@ HTTP response.
 
 It's simple to use, also fun to develop. Let's see how far it goes.
 
-Currently, it depends on `net.devh:grpc-spring-boot-starter` in order to access gRPC `Server`
-from `GrpcServerLifecycle` using reflection. Will ask google about their comment
+Currently, it depends on [`net.devh:grpc-spring-boot-starter`][1] in order to access gRPC [`Server`][2]
+from [`GrpcServerLifecycle`][3] using reflection. Will ask google about their comment
 on: `io.grpc.Server.SERVER_CONTEXT_KEY`
 
 ```java
@@ -20,6 +20,7 @@ static final Context.Key<Server> SERVER_CONTEXT_KEY=Context.key("io.grpc.Server"
 ```
 
 ## Usage
+Show me how: refer to the sub-module `example` with its tests.
 
 ### dependency
 
@@ -47,9 +48,10 @@ After implementing a gRPC service, provide following beans:
 * `FileDescriptor`
 * `HttpGrpcMapper`
 
-Also refer to the sub-module `example` with its single test.
-
 ## TODO
 
-- [ ] support WebFlux
-- [ ] integration spring security
+Refer to open issues.
+
+[1]: https://github.com/yidongnan/grpc-spring-boot-starter
+[2]: https://github.com/grpc/grpc-java/blob/master/api/src/main/java/io/grpc/Server.java
+[3]: https://github.com/yidongnan/grpc-spring-boot-starter/blob/master/grpc-server-spring-boot-autoconfigure/src/main/java/net/devh/boot/grpc/server/serverfactory/GrpcServerLifecycle.java
