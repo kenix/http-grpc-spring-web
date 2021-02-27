@@ -31,7 +31,7 @@ Maven:
 <dependency>
   <groupId>io.github.kenix</groupId>
   <artifactId>http-grpc-spring-web</artifactId>
-  <version>0.1.0-rc.2</version>
+  <version>0.1.0-rc.3</version>
 </dependency>
 ```
 
@@ -39,7 +39,7 @@ Gradle:
 
 ```groovy
 dependencies {
-  implementation 'io.github.kenix:http-grpc-spring-web:0.1.0-rc.2'
+  implementation 'io.github.kenix:http-grpc-spring-web:0.1.0-rc.3'
 }
 ```
 
