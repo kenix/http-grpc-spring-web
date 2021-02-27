@@ -55,7 +55,7 @@ import org.springframework.web.servlet.mvc.AbstractController;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class TranscoderController extends AbstractController {
+class TranscoderController extends AbstractController {
 
   public static final String CONTENT_TYPE_PROTOBUF = MediaType.APPLICATION_OCTET_STREAM_VALUE;
   public static final String CONTENT_TYPE_JSON = MediaType.APPLICATION_JSON_VALUE;

@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public class DirectServerCall<ReqT, RespT> extends ServerCall<ReqT, RespT> {
+class DirectServerCall<ReqT, RespT> extends ServerCall<ReqT, RespT> {
 
   private final MethodDescriptor<ReqT, RespT> desc;
 

@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
  *
  * @author zzhao
  */
-public final class Util {
+final class Util {
 
   public static final EnumSet<HttpMethod> HTTP_METHODS_NO_BODY =
       EnumSet.of(HttpMethod.GET, HttpMethod.DELETE);
@@ -215,16 +215,16 @@ public final class Util {
 
   private static Optional<Object> getValue(String name, Map<String, Object> pathVars,
       Map<String, String[]> paramMap) {
-    final Object val = pathVars.get(name);
-    if (val != null) {
-      return Optional.of(val);
-    }
-
-    final String[] vals = paramMap.get(name);
-    if (vals != null && vals.length > 0) {
-      return Optional.of(vals[0]);
-    }
-
-    return Optional.empty();
+    return Optional.ofNullable(
+        Optional
+            .ofNullable(pathVars.get(name))
+            .orElseGet(() -> {
+              final String[] vals = paramMap.get(name);
+              if (vals != null && vals.length > 0) {
+                return vals[0];
+              }
+              return null;
+            })
+    );
   }
 }

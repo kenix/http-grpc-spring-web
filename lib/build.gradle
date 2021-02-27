@@ -26,6 +26,7 @@ configurations {
 
 dependencies {
   annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
   implementation "io.grpc:grpc-protobuf:$grpcVersion"
   implementation "io.grpc:grpc-stub:$grpcVersion"
   implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"

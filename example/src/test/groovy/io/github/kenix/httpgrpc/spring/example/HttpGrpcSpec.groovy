@@ -38,7 +38,7 @@ class HttpGrpcSpec extends Specification {
   }
 
   def 'get /v1/greeter/{name} unsupported media type'() {
-    when: 'json'
+    when: 'xml'
     def result = this.mockMvc.perform(
         get("/v1/greeter/foo")
             .accept(MediaType.APPLICATION_XML)
@@ -58,7 +58,7 @@ class HttpGrpcSpec extends Specification {
     noExceptionThrown()
     result.response.status == HttpStatus.BAD_REQUEST.value()
 
-    when: 'protobuf'
+    when: 'proto'
     result = this.mockMvc.perform(
         get("/v1/greeter/$fragment")
             .accept(MediaType.APPLICATION_OCTET_STREAM)
@@ -89,7 +89,7 @@ class HttpGrpcSpec extends Specification {
     then:
     predicate(reply.message)
 
-    when: 'protobuf'
+    when: 'proto'
     result = this.mockMvc.perform(
         get("/v1/greeter/$fragment")
             .accept(MediaType.APPLICATION_OCTET_STREAM)
@@ -117,7 +117,7 @@ class HttpGrpcSpec extends Specification {
   }
 
   def 'post /v1/greeter not acceptable content type'() {
-    when: 'json'
+    when: 'xml'
     def result = this.mockMvc.perform(
         post("/v1/greeter")
             .accept(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ class HttpGrpcSpec extends Specification {
   }
 
   def 'post /v1/greeter unsupported media type'() {
-    when: 'json'
+    when: 'xml'
     def result = this.mockMvc.perform(
         post("/v1/greeter")
             .accept(MediaType.APPLICATION_XML)
@@ -175,7 +175,7 @@ class HttpGrpcSpec extends Specification {
     then:
     parts.every { reply.message.contains(it) }
 
-    when: 'json'
+    when: 'proto'
     result = this.mockMvc.perform(
         post(path)
             .accept(MediaType.APPLICATION_OCTET_STREAM)

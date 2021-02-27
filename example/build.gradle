@@ -4,7 +4,7 @@ plugins {
 }
 
 ext {
-  envoyproxyversion = '0.4.1'
+  envoyProxyVersion = '0.4.1'
 }
 
 sourceSets {
@@ -26,12 +26,12 @@ configurations {
 dependencies {
   implementation "io.grpc:grpc-protobuf:$grpcVersion"
   implementation "io.grpc:grpc-stub:$grpcVersion"
-  implementation "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyproxyversion"
-  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-stub:$envoyproxyversion"
+  implementation "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyProxyVersion"
+  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-stub:$envoyProxyVersion"
   implementation 'org.springframework.boot:spring-boot-starter-web:2.4.2'
   implementation project(':lib')
   implementation 'net.devh:grpc-server-spring-boot-starter:2.10.1.RELEASE'
-  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-grpc:$envoyproxyversion"
+  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-grpc:$envoyProxyVersion"
 
   annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }
@@ -52,7 +52,7 @@ protobuf {
       artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
     }
     javapgv {
-      artifact = "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyproxyversion"
+      artifact = "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyProxyVersion"
     }
   }
 
