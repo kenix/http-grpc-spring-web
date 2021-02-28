@@ -20,7 +20,8 @@ static final Context.Key<Server> SERVER_CONTEXT_KEY=Context.key("io.grpc.Server"
 ```
 
 ## Usage
-Show me how: refer to the sub-module `example` with its tests.
+
+Show me how: refer to the sub-module **example** with its tests.
 
 ### dependency
 
@@ -47,6 +48,10 @@ After implementing a gRPC service, provide following beans:
 
 * `FileDescriptor`
 * `HttpGrpcMapper`
+
+## Integration
+
+* distributed tracing: out of the box with `spring-cloud-starter-sleuth`, see also module __client__
 
 ## TODO
 

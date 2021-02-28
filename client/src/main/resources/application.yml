@@ -1,13 +1,12 @@
 spring:
+  application:
+    name: client
   main:
     cloud-platform: kubernetes
     banner-mode: off
   lifecycle:
     timeout-per-shutdown-phase: 10s
-grpc:
-  server:
-    port: 9898
 
 server:
   shutdown: graceful
-  port: 8080
+  port: 8081

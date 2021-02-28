@@ -2,12 +2,13 @@ package io.github.kenix.httpgrpc.spring.example
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.protobuf.util.JsonFormat
-import net.kenix.grpc.greeter.api.GreeterProto
+import io.github.kenix.grpc.greeter.api.GreeterProto
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -21,8 +22,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 /**
  * @author zzhao
  */
-@ContextConfiguration(initializers = ConfigDataApplicationContextInitializer)
+@ContextConfiguration(initializers = ConfigFileApplicationContextInitializer)
 @SpringBootTest(classes = App)
+@ActiveProfiles(['test'])
 class HttpGrpcSpec extends Specification {
 
   @Autowired

@@ -6,7 +6,7 @@ import "validate/validate.proto";
 package greet;
 
 option java_multiple_files = false;
-option java_package = "net.kenix.grpc.greeter.api";
+option java_package = "io.github.kenix.grpc.greeter.api";
 option java_outer_classname = "GreeterProto";
 
 service Greeter {

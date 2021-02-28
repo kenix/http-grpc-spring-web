@@ -22,7 +22,4 @@
     <appender-ref ref="CONSOLE"/>
   </root>
 
-  <logger name="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" level="DEBUG"/>
-  <logger name="io.github.kenix.httpgrpc.spring.example.ServiceImpl" level="DEBUG"/>
-
 </configuration>

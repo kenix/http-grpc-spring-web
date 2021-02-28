@@ -1,0 +1,59 @@
+plugins {
+  id 'java-library'
+  id 'com.google.protobuf' version "$protobufVersion"
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+    vendor = JvmVendorSpec.ADOPTOPENJDK
+  }
+}
+
+sourceSets {
+  main {
+    java {
+      srcDir "${buildDir}/generated-sources/main/java"
+      srcDir "${buildDir}/generated-sources/main/grpc"
+      srcDir "${buildDir}/generated-sources/main/javapgv"
+    }
+  }
+}
+
+dependencies {
+  implementation "io.grpc:grpc-protobuf:$grpcVersion"
+  implementation "io.grpc:grpc-stub:$grpcVersion"
+  implementation "jakarta.annotation:jakarta.annotation-api:1.3.5"
+  implementation "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyProxyVersion"
+  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-stub:$envoyProxyVersion"
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:$protocVersion"
+  }
+
+  generatedFilesBaseDir = "$buildDir/generated-sources"
+
+  clean {
+    delete generatedFilesBaseDir
+  }
+
+  plugins {
+    grpc {
+      artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
+    }
+    javapgv {
+      artifact = "io.envoyproxy.protoc-gen-validate:protoc-gen-validate:$envoyProxyVersion"
+    }
+  }
+
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+      javapgv {
+        option "lang=java"
+      }
+    }
+  }
+}

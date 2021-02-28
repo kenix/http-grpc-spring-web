@@ -1,7 +1,7 @@
 buildscript {
   ext {
-    springBootVersion = '2.3.8.RELEASE'
-    sleuthVersion = '2.2.7.RELEASE'
+    springBootVersion = '2.4.3'
+    sleuthVersion = '3.0.1'
   }
 }
 
@@ -25,25 +25,17 @@ configurations {
 
 dependencies {
   implementation project(':api')
-  implementation project(':lib')
+  implementation 'com.google.protobuf:protobuf-java:3.12.0'
   implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-  implementation 'net.devh:grpc-server-spring-boot-starter:2.10.1.RELEASE'
-  implementation "io.envoyproxy.protoc-gen-validate:pgv-java-grpc:$envoyProxyVersion"
 
   annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
   runtime("org.springframework.cloud:spring-cloud-starter-sleuth:$sleuthVersion") {
-    exclude group: 'io.zipkin.aws', module: 'brave-propagation-aws'
     exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-jms'
     exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-kafka-clients'
     exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-kafka-streams'
     exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-messaging'
     exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-spring-rabbit'
-    exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-httpclient'
-    exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-httpasyncclient'
     exclude group: 'io.zipkin.brave', module: 'brave-instrumentation-mongodb'
   }
-  runtime "io.zipkin.brave:brave-instrumentation-grpc:5.13.3"
-
-  testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 }

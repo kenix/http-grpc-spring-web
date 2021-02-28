@@ -1,4 +1,6 @@
 rootProject.name = 'http-grpc-spring-web'
 
 include('lib')
+include('api')
 include('example')
+include('client')
