@@ -15,7 +15,6 @@ import net.devh.boot.grpc.server.service.GrpcService;
 
 @RequiredArgsConstructor
 @Slf4j
-@GrpcService
 public class ServiceImpl extends GreeterImplBase {
 
   @Override

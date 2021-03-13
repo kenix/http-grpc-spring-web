@@ -1,4 +1,4 @@
-package io.github.kenix.httpgrpc.spring;
+package io.github.kenix.httpgrpc.spring.strategy;
 
 import io.grpc.Metadata;
 import io.grpc.MethodDescriptor;
@@ -18,7 +18,7 @@ class DirectServerCall<ReqT, RespT> extends ServerCall<ReqT, RespT> {
 
   private final MethodDescriptor<ReqT, RespT> desc;
 
-  private Object message;
+  private RespT message;
 
   private Metadata headers;
 

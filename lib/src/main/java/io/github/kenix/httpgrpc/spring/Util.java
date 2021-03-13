@@ -8,6 +8,7 @@ import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.Type;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
 import com.google.protobuf.Message.Builder;
 import com.google.rpc.Status;
 import io.grpc.Status.Code;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -43,6 +45,16 @@ final class Util {
 
   private Util() {
     throw new AssertionError("not for instantiation or inheritance");
+  }
+
+  /**
+   * Reflectively creates a message builder.
+   *
+   * @return a {@link Builder}.
+   */
+  @SneakyThrows
+  public static Message.Builder getBuilder(Class<? extends Message> clazz) {
+    return (Builder) clazz.getMethod("newBuilder").invoke(null);
   }
 
   /**

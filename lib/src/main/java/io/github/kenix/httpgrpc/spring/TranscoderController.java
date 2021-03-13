@@ -3,6 +3,7 @@ package io.github.kenix.httpgrpc.spring;
 import static io.github.kenix.httpgrpc.spring.Util.HTTP_METHODS_NO_BODY;
 import static io.github.kenix.httpgrpc.spring.Util.HTTP_METHODS_WITH_BODY;
 import static io.github.kenix.httpgrpc.spring.Util.SUPPORTED_METHODS;
+import static io.github.kenix.httpgrpc.spring.Util.getBuilder;
 import static io.github.kenix.httpgrpc.spring.Util.grpcStatus;
 import static io.github.kenix.httpgrpc.spring.Util.protoStatus;
 import static io.github.kenix.httpgrpc.spring.Util.setFields;
@@ -17,15 +18,10 @@ import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor.Type;
 import com.google.protobuf.Descriptors.MethodDescriptor;
 import com.google.protobuf.Empty;
-import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Message;
-import com.google.protobuf.Message.Builder;
 import com.google.protobuf.util.JsonFormat;
 import com.google.protobuf.util.JsonFormat.Printer;
-import io.grpc.Metadata;
-import io.grpc.ServerCall.Listener;
-import io.grpc.ServerCallHandler;
-import io.grpc.ServerMethodDefinition;
+import io.github.kenix.httpgrpc.spring.strategy.ServerCallStrategy;
 import io.grpc.Status;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -67,9 +63,9 @@ class TranscoderController extends AbstractController {
   private static final Printer PRINTER = JsonFormat.printer().omittingInsignificantWhitespace();
 
   private final HttpMethod httpMethod;
-  private final ServerMethodDefinition<?, ?> methodDef;
   private final Class<? extends Message> reqClass;
   private final MethodDescriptor methodDesc;
+  private final ServerCallStrategy serverCall;
 
   @Setter
   private String body;
@@ -96,19 +92,8 @@ class TranscoderController extends AbstractController {
             ? getMessageWithBody(req)
             : Optional.empty();
     if (message.isPresent()) {
-      final ServerCallHandler<?, ?> callHandler = this.methodDef.getServerCallHandler();
-      final DirectServerCall call = new DirectServerCall(this.methodDef.getMethodDescriptor());
-      final Listener listener = callHandler.startCall(call, new Metadata());
-
-      listener.onMessage(message.get());
-      listener.onHalfClose();
-      listener.onComplete();
-
-      if (call.getStatus().isOk()) {
-        onSuccess((GeneratedMessageV3) call.getMessage(), responseContentType, resp);
-      } else {
-        onError(call.getStatus().asException(), responseContentType, resp);
-      }
+      final Message reply = this.serverCall.call(message.get());
+      onSuccess(reply, responseContentType, resp);
     } else {
       notAcceptable(resp);
     }
@@ -202,11 +187,6 @@ class TranscoderController extends AbstractController {
     resp.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
   }
 
-  @SneakyThrows
-  private Message.Builder getBuilder(Class<? extends Message> clazz) {
-    return (Builder) clazz.getMethod("newBuilder").invoke(null);
-  }
-
   /**
    * Handles exceptions and translates it into proper responses.
    */
@@ -217,18 +197,13 @@ class TranscoderController extends AbstractController {
         getResponseContentType(req), resp);
   }
 
-  private void onError(Throwable t, String responseContentType, HttpServletResponse resp) {
-    final Status status = grpcStatus(t);
-    wireResponse(toHttpStatus(status.getCode()), protoStatus(status), responseContentType, resp);
-  }
-
-  private void onSuccess(GeneratedMessageV3 val, String responseContentType,
+  private void onSuccess(Message val, String responseContentType,
       HttpServletResponse resp) {
     wireResponse(HttpStatus.OK, val, responseContentType, resp);
   }
 
   @SneakyThrows
-  private void wireResponse(HttpStatus httpStatus, GeneratedMessageV3 payload,
+  private void wireResponse(HttpStatus httpStatus, Message payload,
       String responseContentType, HttpServletResponse resp) {
     resp.setStatus(httpStatus.value());
     resp.setCharacterEncoding(CHARSET);

@@ -22,10 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 /**
  * @author zzhao
  */
-@ContextConfiguration(initializers = ConfigFileApplicationContextInitializer)
-@SpringBootTest(classes = App)
-@ActiveProfiles(['test'])
-class HttpGrpcSpec extends Specification {
+abstract class HttpGrpcSpec extends Specification {
 
   @Autowired
   WebApplicationContext wac

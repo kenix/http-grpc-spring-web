@@ -4,26 +4,11 @@ A simplistic spring-web component that automatically configures spring-mvc contr
 transcodes HTTP requests, invokes corresponding gRPC service method and transcodes the reply back to
 HTTP response.
 
-It's simple to use, also fun to develop. Let's see how far it goes.
-
-Currently, it depends on [`net.devh:grpc-spring-boot-starter`][1] in order to access gRPC [`Server`][2]
-from [`GrpcServerLifecycle`][3] using reflection. Will ask google about their comment
-on: `io.grpc.Server.SERVER_CONTEXT_KEY`
-
-```java
-/**
- * Key for accessing the {@link Server} instance inside server RPC {@link Context}. It's
- * unclear to us what users would need. If you think you need to use this, please file an
- * issue for us to discuss a public API.
- */
-static final Context.Key<Server> SERVER_CONTEXT_KEY=Context.key("io.grpc.Server");
-```
-
 ## Usage
 
-Show me how: refer to the sub-module **example** with its tests.
+Show me how: refer to the module **example** with its tests.
 
-### dependency
+### Dependency
 
 Maven:
 
@@ -44,10 +29,22 @@ dependencies {
 }
 ```
 
+### Plumbing
+
 After implementing a gRPC service, provide following beans:
 
-* `FileDescriptor`
-* `HttpGrpcMapper`
+`HttpGrpcMapper` responsible for discovering gRPC services and registering transcoder controllers
+
+`GrpcServerDescriptor` used by `HttpGrpcMapper` to discover gRPC services. Currently, only support single server. If necessary, can easily support multiple servers.
+    
+* `List<FileDescriptor>` is mandatory in order to find all message types of gRPC requests. TODO: either injection or enabling ProtoReflectionService
+* one of following alternatives:
+  
+    1. `List<ServerMethodDefinition>` transcoded call is made directly
+    1. gRPC server port and one of following:
+        
+        1. a gRPC global server interceptor `ServerMethodDefinitionInterceptor` and enabling gRPC `HealthService` Invoked the first time (service health check) it will collect all `ServerMethodDefinition`s, after that only forward calls. This enables direct transcoded calls.
+        1. nothing else, transcoded call will not be direct, but routed internally using an embedded gRPC client. This has performance impact.
 
 ## Integration
 
@@ -57,6 +54,4 @@ After implementing a gRPC service, provide following beans:
 
 Refer to open issues.
 
-[1]: https://github.com/yidongnan/grpc-spring-boot-starter
-[2]: https://github.com/grpc/grpc-java/blob/master/api/src/main/java/io/grpc/Server.java
-[3]: https://github.com/yidongnan/grpc-spring-boot-starter/blob/master/grpc-server-spring-boot-autoconfigure/src/main/java/net/devh/boot/grpc/server/serverfactory/GrpcServerLifecycle.java
+[1]: https://github.com/grpc/grpc-java/issues/7927
