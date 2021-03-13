@@ -2,7 +2,7 @@
 
 A simplistic spring-web component that automatically configures spring-mvc controllers that
 transcodes HTTP requests, invokes corresponding gRPC service method and transcodes the reply back to
-HTTP response.
+HTTP response, with little configuration. Inspired by [envoy][3] HTTP to gRPC transcoder.
 
 ## Usage
 
@@ -56,3 +56,4 @@ Refer to open issues.
 
 [1]: https://github.com/grpc/grpc-java/issues/7927
 [2]: example/src/main/java/io/github/kenix/httpgrpc/spring/example/App.java
+[3]: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/grpc_json_transcoder_filter
