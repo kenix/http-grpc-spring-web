@@ -6,7 +6,7 @@ HTTP response.
 
 ## Usage
 
-Show me how: refer to the module **example** with its tests.
+Show me how: refer to the module [**example**][2] with its tests.
 
 ### Dependency
 
@@ -17,7 +17,7 @@ Maven:
 <dependency>
   <groupId>io.github.kenix</groupId>
   <artifactId>http-grpc-spring-web</artifactId>
-  <version>0.1.0-rc.3</version>
+  <version>0.1.0-rc.4</version>
 </dependency>
 ```
 
@@ -25,7 +25,7 @@ Gradle:
 
 ```groovy
 dependencies {
-  implementation 'io.github.kenix:http-grpc-spring-web:0.1.0-rc.3'
+  implementation 'io.github.kenix:http-grpc-spring-web:0.1.0-rc.4'
 }
 ```
 
@@ -55,3 +55,4 @@ After implementing a gRPC service, provide following beans:
 Refer to open issues.
 
 [1]: https://github.com/grpc/grpc-java/issues/7927
+[2]: example/src/main/java/io/github/kenix/httpgrpc/spring/example/App.java
